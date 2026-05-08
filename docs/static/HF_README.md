@@ -15,7 +15,7 @@ size_categories:
   - 1G<n<10G
 ---
 
-# PerceptPick — Benchmarking the Effects of Object Pose Estimation and Reconstruction on Robotic Grasping Success
+# Benchmarking the Effects of Object Pose Estimation and Reconstruction on Robotic Grasping Success
 
 This dataset accompanies the paper accepted at **IEEE ICRA 2026**:
 
