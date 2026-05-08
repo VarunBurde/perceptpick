@@ -122,3 +122,8 @@ logs_old/
 
 # project page source media (mirrored under docs/static/)
 docs/media/
+
+# throwaway helper scripts (visualization, ad-hoc reproducibility checks).
+# kept locally so we can regenerate README assets on demand, but not
+# part of the canonical pipeline (01_..05_*.py are).
+scripts/tmp_*.py
