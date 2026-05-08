@@ -34,7 +34,7 @@
     const entry = byObject.get(obj).find(e => e.gripper === gripper);
     if (!entry) return;
     video.src = 'static/videos/comparisons/' + entry.file;
-    caption.textContent = `${entry.label} · ${entry.gripper_label} — left: GT mesh, right: BakedSDF reconstruction`;
+    caption.textContent = `${entry.label} · ${entry.gripper_label} — green: GT mesh, red: BakedSDF reconstruction at the FoundationPose-estimated pose`;
   }
 
   function repopulateGrippers() {
