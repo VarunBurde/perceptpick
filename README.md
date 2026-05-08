@@ -1,8 +1,12 @@
 # PerceptPick
 
-**B**OP-style Benchmark for **O**bject **G**rasping — a physics-simulation framework
-for evaluating how 6D pose estimation and 3D reconstruction errors propagate to
-downstream robotic grasping success.
+A physics-simulation framework for evaluating how 6D pose estimation and
+3D reconstruction errors propagate to downstream robotic grasping success.
+
+[**arXiv**](https://arxiv.org/abs/2602.17101) ·
+[**Project page**](https://varunburde.github.io/perceptpick) ·
+[**Hugging Face dataset**](https://huggingface.co/datasets/varunburde/perceptpick) ·
+[**Code**](https://github.com/varunburde/perceptpick)
 
 This is the reference implementation for:
 
@@ -123,7 +127,20 @@ pixi shell
 Installs `perceptpick` as an editable package plus the scientific stack
 (numpy, pybullet, trimesh, open3d, pandas, …).
 
+## BOP-style dataset support
+
+The framework consumes any [BOP](https://bop.felk.cvut.cz/) (Benchmark
+for 6D Object Pose Estimation) dataset out of the box — pass its name
+via `--dataset`. The paper benchmarks **YCB-V**, but the same scripts
+also accept T-LESS, LM-O, ITODD, HB, IC-BIN, RU-APC, … as long as
+the canonical BOP layout is present (`models/`, `test/<scene>/{rgb,
+depth, scene_camera.json, scene_gt.json}`, `test_targets_bop19.json`).
+Object IDs follow BOP's `obj_NNNNNN.ply` convention; per-object grasp
+rankings, pose CSVs, and Stage C results all key on those IDs.
+
 ## Get the YCB-Video dataset
+
+The paper's reference runs use YCB-V; download from BOP:
 
 ```bash
 cd dataset
@@ -365,8 +382,14 @@ case-sensitive — they're used verbatim as folder names under
 
 ## Supported grippers
 
-Two-finger: `franka, robotiq_2f_85, robotiq_2f_140, wsg_50, wsg_32, ezgripper, sawyer`
+Two-finger: `franka, robotiq_2f_85, robotiq_2f_140, wsg_32, wsg_50, ezgripper, sawyer, rg2`
 Three-finger: `robotiq_3f, kinova_3f, barrett, barrett_2f`
+
+The paper's headline sweep covers the 9-gripper subset (`franka,
+robotiq_2f_85, robotiq_2f_140, wsg_32, wsg_50, ezgripper, sawyer,
+robotiq_3f, kinova_3f`); pass `--grippers <name>,<name>,…` to
+`02_grasp_sweep.py` to select a different subset, or omit the flag for
+the paper's set.
 
 ## Supported pose estimators (CSV inputs)
 
@@ -397,7 +420,7 @@ benchmark in academic work.
 
 The pose error metrics in `perceptpick/metrics/pose_error.py` are taken
 verbatim from the [BOP toolkit](https://github.com/thodan/bop_toolkit) by
-Tomas Hodan (CTU Prague).
+Tomáš Hodaň (CTU Prague).
 
 ## Citation
 
