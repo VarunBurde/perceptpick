@@ -1,0 +1,31 @@
+[workspace]
+name = "perceptpick"
+version = "0.1.0"
+channels = ["conda-forge"]
+platforms = ["osx-arm64"]
+
+[dependencies]
+python = "3.10.*"
+numpy = "*"
+scipy = "*"
+matplotlib = "*"
+h5py = "*"
+pyyaml = "*"
+numba = "*"
+quaternion = "*"        # provides numpy-quaternion
+tqdm = "*"
+open3d = "*"
+trimesh = "*"
+pybullet = "*"
+pandas = "*"
+pillow = "*"
+pytest = ">=9.0.3,<10"
+rtree = ">=1.4.1,<2"
+huggingface_hub = ">=1.14.0,<2"
+
+[pypi-dependencies]
+opencv-contrib-python = ">=4.0"
+pyrender = ">=0.1.45"
+python-fcl = ">=0.7.0"
+fpdf2 = ">=2.0"         # fpdf2 is the maintained successor to fpdf
+perceptpick = { path = ".", editable = true }

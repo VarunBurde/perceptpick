@@ -1,0 +1,86 @@
+[
+  {
+    "object": "006_mustard_bottle",
+    "label": "Mustard Bottle",
+    "gripper": "ezgripper",
+    "gripper_label": "EZGripper",
+    "file": "006_mustard_bottle__ezgripper.mp4"
+  },
+  {
+    "object": "006_mustard_bottle",
+    "label": "Mustard Bottle",
+    "gripper": "robotiq_2f_140",
+    "gripper_label": "Robotiq 2F-140",
+    "file": "006_mustard_bottle__robotiq_2f_140.mp4"
+  },
+  {
+    "object": "006_mustard_bottle",
+    "label": "Mustard Bottle",
+    "gripper": "wsg_50",
+    "gripper_label": "WSG-50",
+    "file": "006_mustard_bottle__wsg_50.mp4"
+  },
+  {
+    "object": "009_gelatin_box",
+    "label": "Gelatin Box",
+    "gripper": "ezgripper",
+    "gripper_label": "EZGripper",
+    "file": "009_gelatin_box__ezgripper.mp4"
+  },
+  {
+    "object": "009_gelatin_box",
+    "label": "Gelatin Box",
+    "gripper": "robotiq_2f_140",
+    "gripper_label": "Robotiq 2F-140",
+    "file": "009_gelatin_box__robotiq_2f_140.mp4"
+  },
+  {
+    "object": "009_gelatin_box",
+    "label": "Gelatin Box",
+    "gripper": "wsg_50",
+    "gripper_label": "WSG-50",
+    "file": "009_gelatin_box__wsg_50.mp4"
+  },
+  {
+    "object": "024_bowl",
+    "label": "Bowl",
+    "gripper": "ezgripper",
+    "gripper_label": "EZGripper",
+    "file": "024_bowl__ezgripper.mp4"
+  },
+  {
+    "object": "024_bowl",
+    "label": "Bowl",
+    "gripper": "robotiq_2f_140",
+    "gripper_label": "Robotiq 2F-140",
+    "file": "024_bowl__robotiq_2f_140.mp4"
+  },
+  {
+    "object": "024_bowl",
+    "label": "Bowl",
+    "gripper": "wsg_50",
+    "gripper_label": "WSG-50",
+    "file": "024_bowl__wsg_50.mp4"
+  },
+  {
+    "object": "061_foam_brick",
+    "label": "Foam Brick",
+    "gripper": "ezgripper",
+    "gripper_label": "EZGripper",
+    "file": "061_foam_brick__ezgripper.mp4"
+  },
+  {
+    "object": "061_foam_brick",
+    "label": "Foam Brick",
+    "gripper": "robotiq_2f_140",
+    "gripper_label": "Robotiq 2F-140",
+    "file": "061_foam_brick__robotiq_2f_140.mp4"
+  },
+  {
+    "object": "061_foam_brick",
+    "label": "Foam Brick",
+    "gripper": "wsg_50",
+    "gripper_label": "WSG-50",
+    "file": "061_foam_brick__wsg_50.mp4"
+  }
+]

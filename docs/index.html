@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>PerceptPick — Benchmarking the Effects of Object Pose Estimation and Reconstruction on Robotic Grasping Success</title>
+  <meta name="description" content="ICRA 2026 — A physics-based benchmark for how 6D pose estimation and 3D reconstruction errors propagate to downstream grasping success.">
+  <meta property="og:title" content="PerceptPick — ICRA 2026">
+  <meta property="og:description" content="A physics-based benchmark for how perception errors propagate to grasping success.">
+  <meta property="og:image" content="static/images/hero_poster.png">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.2/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@academicons/academicons@1.9.4/css/academicons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop has-text-centered">
+      <h1 class="title is-2 publication-title">
+        Benchmarking the Effects of Object Pose Estimation<br>
+        and Reconstruction on Robotic Grasping Success
+      </h1>
+
+      <div class="publication-authors">
+        <span class="author-block">Varun Burde</span><span class="sep">,</span>
+        <span class="author-block">Pavel Burget</span><span class="sep">,</span>
+        <span class="author-block">Torsten Sattler</span>
+      </div>
+      <div class="publication-affiliation">Czech Technical University in Prague</div>
+
+      <div class="publication-venue">
+        <span class="tag is-medium is-link is-light">IEEE ICRA 2026</span>
+      </div>
+
+      <div class="publication-links">
+        <a href="https://arxiv.org/abs/2602.17101" class="button is-dark is-rounded">
+          <span class="icon"><i class="ai ai-arxiv"></i></span><span>arXiv</span>
+        </a>
+        <a href="static/pdf/perceptpick.pdf" class="button is-dark is-rounded">
+          <span class="icon"><i class="fas fa-file-pdf"></i></span><span>Paper</span>
+        </a>
+        <a href="https://github.com/varunburde/perceptpick" class="button is-dark is-rounded">
+          <span class="icon"><i class="fab fa-github"></i></span><span>Code</span>
+        </a>
+        <a href="https://huggingface.co/datasets/varunburde/perceptpick" class="button is-dark is-rounded">
+          <span class="icon hf">🤗</span><span>Dataset</span>
+        </a>
+        <a href="#bibtex" class="button is-dark is-rounded">
+          <span class="icon"><i class="fas fa-quote-left"></i></span><span>BibTeX</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <video poster="static/images/hero_poster.png" autoplay muted loop playsinline preload="metadata">
+      <source src="static/videos/teaser.mp4" type="video/mp4">
+    </video>
+    <p class="caption">
+      18.8M+ simulated grasps across 9 grippers × 21 YCB-V objects × 8 reconstruction methods × 2 pose estimators.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Abstract</h2>
+    <div class="content has-text-justified">
+      <p>
+        3D reconstruction serves as the foundational layer for numerous robotic perception tasks,
+        including 6D object pose estimation and grasp pose generation. Modern 3D reconstruction
+        methods for objects can produce visually and geometrically impressive meshes from
+        multi-view images, yet standard geometric evaluations do not reflect how reconstruction
+        quality influences downstream tasks such as robotic manipulation performance. This paper
+        addresses this gap by introducing a large-scale, physics-based benchmark that evaluates
+        6D pose estimators and 3D mesh models based on their functional efficacy in grasping.
+        We analyze the impact of model fidelity by generating grasps on various reconstructed
+        3D meshes and executing them on the ground-truth model, simulating how grasp poses
+        generated with an imperfect model affect interaction with the real object. This assesses
+        the combined impact of pose error, grasp robustness, and geometric inaccuracies from 3D
+        reconstruction. Our results show that reconstruction artifacts significantly decrease the
+        number of grasp pose candidates but have a negligible effect on grasping performance given
+        an accurately estimated pose. Our results also reveal that the relationship between grasp
+        success and pose error is dominated by spatial error, and even a simple translation error
+        provides insight into the success of the grasping pose of symmetric objects. This work
+        provides insight into how perception systems relate to object manipulation using robots.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section method">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Method</h2>
+
+    <figure class="image pipeline-figure">
+      <a href="static/images/pipeline.pdf" title="High-resolution PDF">
+        <img src="static/images/pipeline.png" alt="Benchmark pipeline">
+      </a>
+      <figcaption>
+        Pipeline. An object's mesh and a 6D pose estimate are composed into a planned grasp; the grasp is
+        then executed in PyBullet on the ground-truth object pose.
+        <a href="static/images/pipeline.pdf">High-resolution PDF →</a>
+      </figcaption>
+    </figure>
+
+    <p>
+      We formalise the benchmark as a transformation chain through four frames — World (W), Camera (C),
+      Object (O), Gripper (G):
+    </p>
+    <p class="equations">
+      $$T_{w \to g}^{\text{gt}}\;=\;T_{w \to c}\,\cdot\,T_{c \to o}^{\text{gt}}\,\cdot\,T_{o \to g}$$
+      $$T_{w \to g}^{\text{est}}\;=\;T_{w \to c}\,\cdot\,T_{c \to o}^{\text{est}}\,\cdot\,T_{o \to g}$$
+    </p>
+    <p>
+      $T_{o \to g}$ is a precomputed canonical grasp library; $T_{c \to o}^{\text{est}}$ comes from a 6D pose
+      estimator. The benchmark always <strong>executes</strong> the grasp on the ground-truth object pose but
+      <strong>plans</strong> it from $T_{w \to g}^{\text{est}}$ — this isolates perception error from real-world
+      clutter and dynamics.
+    </p>
+
+    <h3 class="title is-5 has-text-centered">Three experimental conditions</h3>
+    <div class="table-container">
+      <table class="table is-fullwidth is-striped is-hoverable">
+        <thead>
+          <tr><th>Condition</th><th>Grasp Mesh</th><th>Pose Mesh</th><th>What it measures</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Oracle / Oracle</strong></td><td>GT</td><td>GT</td><td>Ideal-baseline grasp performance</td></tr>
+          <tr><td><strong>Oracle / Reconstructed</strong></td><td>GT</td><td>rec</td><td>Pure pose-estimation error impact</td></tr>
+          <tr><td><strong>Reconstructed / Reconstructed</strong></td><td>rec</td><td>rec</td><td>End-to-end realistic perception</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure class="image grasp-grid-figure">
+      <img src="static/images/grasp_grid.png" alt="Grasp candidate visualization grid">
+      <figcaption>
+        Sample grasp candidates across objects and grippers, drawn from the antipodal sampler.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section findings">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Headline findings</h2>
+
+    <article class="finding-card">
+      <h3 class="title is-5"><span class="tag is-link">1</span> Pose accuracy dominates grasp success — not mesh quality.</h3>
+      <p>
+        FoundationPose reaches ~89.9% average estimated success; MegaPose ~59.4%. Even with a reconstructed
+        mesh used for both grasp generation and pose estimation, accurate pose estimation can compensate for
+        moderate mesh flaws.
+      </p>
+      <figure class="image"><img src="static/images/side_by_side.png" alt="Per-method success comparison"></figure>
+    </article>
+
+    <article class="finding-card">
+      <h3 class="title is-5"><span class="tag is-link">2</span> 3D spatial metrics correlate with grasp success; 2D projection error does not.</h3>
+      <p>
+        MSSD, ADD, ADI, and translation error track grasp success closely. MSPD (2D projection) and pure
+        rotation error are poor predictors — many high-MSPD grasps still succeed. This validates that 2D
+        metrics miss what matters for physical contact.
+      </p>
+      <figure class="image"><img src="static/images/metric_corr.png" alt="Estimated success vs. error metrics scatter"></figure>
+    </article>
+
+    <article class="finding-card">
+      <h3 class="title is-5"><span class="tag is-link">3</span> Mesh artifacts reduce candidate count, not executed-grasp success.</h3>
+      <p>
+        Reconstructed meshes produce more <code>Collision</code> failures during sampling (Instant-NGP suffers
+        most), but given an accurate pose the executed grasps still succeed. UniSurf, with smoother surfaces,
+        occasionally beats the oracle CAD mesh by avoiding edge-case collisions.
+      </p>
+      <figure class="image"><img src="static/images/failure_modes.png" alt="Failure mode breakdown across methods"></figure>
+    </article>
+
+    <article class="finding-card">
+      <h3 class="title is-5"><span class="tag is-link">4</span> Symmetry matters.</h3>
+      <p>
+        Rotation error around an object's symmetry axis has negligible effect on grasp success; rotation error
+        orthogonal to the symmetry axis degrades performance sharply.
+      </p>
+    </article>
+
+    <article class="finding-card">
+      <h3 class="title is-5"><span class="tag is-link">5</span> No single best gripper for all objects.</h3>
+      <p>
+        EZGripper wins on ~76% of objects in the YCB-V suite under ideal conditions; WSG-32 and Robotiq 2F-140
+        cover the rest. The choice is object-dependent — a four-panel summary below shows per-object winners
+        and the failure-mode mix.
+      </p>
+      <figure class="image"><img src="static/images/gripper_analysis.png" alt="Gripper analysis 4-panel summary"></figure>
+    </article>
+  </div>
+</section>
+
+<section class="section gallery">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Comparison gallery</h2>
+    <p class="has-text-centered subtitle is-6">
+      Side-by-side execution of grasps planned on GT vs. BakedSDF-reconstructed meshes.
+      Pick an object and a gripper to see how reconstruction artifacts affect candidate selection.
+    </p>
+
+    <div class="gallery-controls">
+      <div class="field">
+        <label class="label" for="obj-select">Object</label>
+        <div class="control"><div class="select is-fullwidth"><select id="obj-select"></select></div></div>
+      </div>
+      <div class="field">
+        <label class="label" for="gripper-select">Gripper</label>
+        <div class="control"><div class="select is-fullwidth"><select id="gripper-select"></select></div></div>
+      </div>
+    </div>
+
+    <video id="cmp-video" controls playsinline preload="metadata"></video>
+    <p id="cmp-caption" class="caption"></p>
+  </div>
+</section>
+
+<section class="section reproduce">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Reproduce in 5 commands</h2>
+    <p>
+      Pre-prepared assets (~7 GB) are mirrored on Hugging Face — <a
+      href="https://huggingface.co/datasets/varunburde/perceptpick"><code>varunburde/perceptpick</code></a>. You can skip
+      asset preparation entirely and jump straight to the simulation stages.
+    </p>
+    <pre><code># 1. Clone + install
+git clone https://github.com/varunburde/perceptpick.git &amp;&amp; cd perceptpick
+pixi install &amp;&amp; pixi shell
+
+# 2. Pull pre-prepared assets directly into ./assets
+hf download varunburde/perceptpick --repo-type=dataset --local-dir assets
+
+# 3. Stage B — sample antipodal grasps for every (object, gripper)
+pixi run python scripts/02_grasp_sweep.py --dataset ycbv --mesh-source GT --n-grasps 5000
+
+# 4. Stage C — Oracle / Oracle (ideal baseline)
+pixi run python scripts/04_evaluate.py --dataset ycbv --gt-mesh GT --est-mesh GT \
+    --pose-csv FoundationPose.csv --gripper auto --workers 4 --resume --headless
+
+# 5. Stage C — Reconstructed / Reconstructed (end-to-end realistic)
+pixi run python scripts/04_evaluate.py --dataset ycbv --gt-mesh BakedSDF --est-mesh BakedSDF \
+    --pose-csv FoundationPose.csv --gripper auto --workers 4 --resume --headless
+</code></pre>
+  </div>
+</section>
+
+<section class="section bibtex" id="bibtex">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">BibTeX</h2>
+    <pre id="bibtex-code"><code>@inproceedings{burde2026perceptpick,
+  title     = {Benchmarking the Effects of Object Pose Estimation and
+               Reconstruction on Robotic Grasping Success},
+  author    = {Burde, Varun and Burget, Pavel and Sattler, Torsten},
+  booktitle = {IEEE International Conference on Robotics and Automation (ICRA)},
+  year      = {2026}
+}</code></pre>
+    <div class="has-text-centered">
+      <button id="bibtex-copy" class="button is-light">
+        <span class="icon"><i class="fas fa-copy"></i></span><span>Copy</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="section ack">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Acknowledgments</h2>
+    <p>
+      This benchmark is heavily derived from
+      <a href="https://github.com/mrudorfer/burg-toolkit">burg-toolkit</a>
+      (MIT, © 2022 Martin Rudorfer): gripper URDFs and meshes, the antipodal grasp sampler, the PyBullet
+      simulation harness, and most core utility modules trace back to that codebase. The pose-error metrics
+      come from the <a href="https://github.com/thodan/bop_toolkit">BOP toolkit</a> by Tomáš Hodaň
+      (CTU Prague). YCB-V meshes and test scenes are from the
+      <a href="https://bop.felk.cvut.cz/datasets/">BOP Challenge</a>.
+    </p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container has-text-centered">
+    <p class="is-size-7">
+      Built with the
+      <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page Template</a>.
+      Source on <a href="https://github.com/varunburde/perceptpick">GitHub</a>.
+    </p>
+  </div>
+</footer>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}]});"></script>
+<script src="static/js/gallery.js" defer></script>
+<script src="static/js/bibtex.js" defer></script>
+</body>
+</html>
