@@ -347,26 +347,6 @@ output/
 └── visualization/                                            # plots
 ```
 
-## Path overrides
-
-Default roots are `<cwd>/{dataset,output,assets}`. Override globally with
-env vars (`BOG_DATASET_ROOT`, `BOG_OUTPUT_ROOT`, `BOG_ASSETS_ROOT`) or
-per-script with `--dataset-root` / `--output-root` / `--assets-root`.
-
-## Library API
-
-The `perceptpick` package is importable; the numbered scripts are thin
-argparse wrappers.
-
-```python
-from perceptpick.core import ObjectType, ObjectInstance, Scene
-from perceptpick.grippers import Franka, get_gripper_class
-from perceptpick.sampling import AntipodalGraspSampler
-from perceptpick.sim import GraspSimulator, GraspSimulatorWithGravityControl, GraspScores
-from perceptpick.eval.ranker import rank_grippers, best_gripper_for
-from perceptpick.eval.pick import evaluate_pick, PickEvalConfig
-```
-
 ## Simulation details
 
 - Friction coefficient on the GT object: 0.5 (representative of plastic on
@@ -404,13 +384,6 @@ assets/ycbv/BakedSDF/pose_estimates/FoundationPose.csv  # FoundationPose on Bake
 The paper reports results for FoundationPose and MegaPose. For
 backwards-compat the legacy flat layout
 (`dataset/<dataset>/methods_poses/<name>.csv`) still works as a fallback.
-
-## Limitations (per paper)
-
-- Pure simulation: no validation on a physical robot yet.
-- Two-jaw antipodal grasping only; suction or soft grippers excluded.
-- Task-agnostic grasps; semantic constraints (e.g. "grasp the mug by its
-  handle") are out of scope.
 
 ## Acknowledgments
 
