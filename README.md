@@ -3,10 +3,12 @@
 A physics-simulation framework for evaluating how 6D pose estimation and
 3D reconstruction errors propagate to downstream robotic grasping success.
 
-[**arXiv**](https://arxiv.org/abs/2602.17101) ·
-[**Project page**](https://varunburde.github.io/perceptpick) ·
-[**Hugging Face dataset**](https://huggingface.co/datasets/varunburde/perceptpick) ·
-[**Code**](https://github.com/varunburde/perceptpick)
+[![arXiv](https://img.shields.io/badge/arXiv-2602.17101-b31b1b?style=flat-square&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2602.17101)
+[![Project](https://img.shields.io/badge/project-page-555555?style=flat-square)](https://varunburde.github.io/perceptpick)
+[![Dataset](https://img.shields.io/badge/%F0%9F%A4%97-dataset-ffbd59?style=flat-square)](https://huggingface.co/datasets/varunburde/perceptpick)
+[![Code](https://img.shields.io/badge/code-github-24292f?style=flat-square&logo=github&logoColor=white)](https://github.com/varunburde/perceptpick)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow?style=flat-square)](LICENSE)
+[![License: CC BY 4.0](https://img.shields.io/badge/license-CC--BY--4.0-lightgrey?style=flat-square)](https://creativecommons.org/licenses/by/4.0/)
 
 This is the reference implementation for:
 
@@ -14,6 +16,10 @@ This is the reference implementation for:
 > Robotic Grasping Success**
 > Varun Burde, Pavel Burget, Torsten Sattler — Czech Technical University in Prague.
 > *Accepted at IEEE International Conference on Robotics and Automation (ICRA) 2026.*
+
+<p align="center">
+  <img src="docs/media/pickup_grid_4x9.gif" alt="Simulated grasps across 4 YCB-V objects × 9 grippers" width="820"/>
+</p>
 
 ## Why this benchmark exists
 
@@ -56,6 +62,10 @@ binary pick success, across millions of physics simulations:
    objects in the YCB-V suite under ideal conditions; WSG-32 and
    Robotiq 2F-140 cover the rest.
 
+<p align="center">
+  <img src="docs/static/images/metric_corr.png" alt="Estimated success rate vs pose error metrics" width="720"/>
+</p>
+
 ## Pipeline
 
 The paper formalises the benchmark as a transformation chain through four
@@ -79,6 +89,10 @@ generates the grasp library and which mesh the pose estimator is given:
 | **Oracle / Oracle**          | GT  | GT  | Ideal-baseline grasp performance |
 | **Oracle / Reconstructed**   | GT  | rec | Pure pose-estimation error impact |
 | **Reconstructed / Reconstructed** | rec | rec | End-to-end realistic perception |
+
+<p align="center">
+  <img src="docs/static/images/pipeline.png" alt="Evaluation pipeline overview" width="720"/>
+</p>
 
 Three stages, run as five numbered scripts:
 
@@ -116,6 +130,10 @@ Failure modes are categorised by physics-based outcome breakdown:
   caused by translation error in the estimated pose)
 - **Collision** — gripper body collides with the object during approach,
   preventing a valid grasp
+
+<p align="center">
+  <img src="docs/static/images/failure_modes.png" alt="Success rates and failure mode breakdown per reconstruction method" width="760"/>
+</p>
 
 ## Install
 
@@ -337,6 +355,10 @@ pixi run python scripts/03_report_grippers.py --mesh-source GT
 The PNG mirrors the paper's Fig 2 (per-object success heatmap, best-gripper
 share pie, per-gripper average bar, failure-mode stacked bar). Pass
 `--no-plot` to skip matplotlib and write only the markdown table.
+
+<p align="center">
+  <img src="docs/static/images/gripper_analysis.png" alt="Gripper performance analysis — success rates, best-gripper share, failure breakdown" width="760"/>
+</p>
 
 ## Watch one grasp simulate (debug)
 
